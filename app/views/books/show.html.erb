@@ -1,5 +1,7 @@
 <div class='container'>
   <div class='row'>
+    
+    
     <div class='col-md-3'>
       <h2>User info</h2>
       <%= render 'users/info' ,user: @book.user %>
@@ -25,6 +27,24 @@
             <%end%>
         </tr>
       </table>
+      <div>
+  <p></p>
+  <% @book.post_comments.each do |post_comment| %>
+    <p><%= image_tag post_comment.user.get_profile_image, size:"100x100"  %></p>
+    <%= post_comment.user.name %>
+    <%= post_comment.created_at.strftime('%Y/%m/%d') %><%= post_comment.comment %>
+  <% end %>
+</div>
+<div>
+  <%= form_with model: [@book, @post_comment] do |f| %>
+    <%= f.text_area :comment, rows: '5' %>
+    <%= f.submit "送信" %>
+  <% end %>
+</div>
+      
     </div>
+    
+    
   </div>
 </div>
+
