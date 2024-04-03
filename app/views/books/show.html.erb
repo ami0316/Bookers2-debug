@@ -1,7 +1,7 @@
 <div class='container'>
   <div class='row'>
-    
-    
+
+
     <div class='col-md-3'>
       <h2>User info</h2>
       <%= render 'users/info' ,user: @book.user %>
@@ -17,6 +17,17 @@
             <%= @book.user.name %>
             <% end %>
           </td>
+          <td>
+            <% if @book.favorited_by?(current_user) %>
+            <%= link_to book_favorite_path(@book), method: :delete do %>
+            ♥<%= @book.favorites.count %> いいね
+          <% end %>
+          <% else %>
+          <%= link_to book_favorite_path(@book), method: :post do %>
+            ♡<%= @book.favorites.count %> いいね
+          <% end %>
+          <% end %>
+          </td>
           <td><%= link_to @book.title, @book %></td>
           <td><%= @book.body %></td>
            <% if @book.user == current_user %>
@@ -25,26 +36,14 @@
              <% if @book.user == current_user %>
             <td><%= link_to 'Destroy', @book, method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%></td>
             <%end%>
-        </tr>
-      </table>
-      <div>
-  <p></p>
-  <% @book.post_comments.each do |post_comment| %>
-    <p><%= image_tag post_comment.user.get_profile_image, size:"100x100"  %></p>
-    <%= post_comment.user.name %>
-    <%= post_comment.created_at.strftime('%Y/%m/%d') %><%= post_comment.comment  %>
-  <% end %>
-</div>
-<div>
-  <%= form_with model: [@book, @post_comment] do |f| %>
-    <%= f.text_area :comment, rows: '5' %>
-    <%= f.submit "送信" %>
-  <% end %>
-</div>
-      
-    </div>
-    
-    
-  </div>
-</div>
+          </tr>
+          </table>
+         
+          <div id="comments-area"><%= render "post_comments/comments",book: @book,post_comment: @post_comment %></div>
 
+
+          </div>
+
+
+          </div>
+          </div>
